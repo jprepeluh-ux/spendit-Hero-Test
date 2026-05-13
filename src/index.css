@@ -1,0 +1,329 @@
+@import "tailwindcss";
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+::selection {
+  background: rgba(232, 254, 66, 0.4);
+  color: inherit;
+}
+
+/* ── App Layout ────────────────────────────────────────── */
+
+.app {
+  position: relative;
+}
+
+/* ── Navigation ────────────────────────────────────────── */
+
+.hs-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 80px;
+  z-index: 100;
+  background: rgba(255, 250, 238, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.hs-nav-logo {
+  display: block;
+  width: 160px;
+  height: 36px;
+  -webkit-mask-image: url('/assets/logo.svg');
+  mask-image: url('/assets/logo.svg');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-color: currentColor;
+  flex-shrink: 0;
+}
+
+.hs-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  list-style: none;
+}
+
+.hs-nav-link {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 400;
+  font-size: 16px;
+  text-decoration: none;
+  white-space: nowrap;
+  opacity: 0.8;
+  transition: opacity 0.15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hs-nav-link::after {
+  content: attr(data-text);
+  font-weight: 600;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.hs-nav-link:hover {
+  font-weight: 600;
+  opacity: 1;
+}
+
+.hs-nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.hs-nav-btn {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  color: #494949;
+  background: #E8FE42;
+  border-radius: 9999px;
+  padding: 14px 24px;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Palette Icon Button */
+.hs-palette-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 9999px;
+  border: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* Burger — nur Mobile sichtbar */
+.hs-burger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.hs-burger-line {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #494949;
+  border-radius: 2px;
+  transform-origin: center;
+}
+
+/* Mobile Dropdown */
+.hs-mobile-menu {
+  position: absolute;
+  top: 79px;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 21px 24px 28px;
+  background: rgba(255, 250, 238, 0.72);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.hs-mobile-link {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  text-decoration: none;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+.hs-mobile-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}
+
+/* ── Herostage ─────────────────────────────────────────── */
+
+.hs {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  overflow: hidden;
+}
+
+/* Vollformat-Ebenen (BG + Freisteller) — etwas größer als Container für Parallax-Puffer */
+.hs-fill {
+  position: absolute;
+  inset: -35px;
+}
+
+.hs-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Freisteller: Fokus auf rechte Bildhälfte */
+.hs-frei {
+  object-position: 65% center;
+}
+
+/* Plus SVG */
+.hs-plus {
+  position: absolute;
+  left: 65.4%;
+  top: 2.7%;
+  width: 29.5%;
+}
+
+/* Textbox — immer an der Unterkante, Hintergrundfarbe via JS/Framer */
+.hs-textbox {
+  position: absolute;
+  left: 5.56%;
+  bottom: 6%;
+  width: 650px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  padding: 40px;
+  border-radius: 0 64px 0 64px;
+}
+
+
+.hs-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.hs-headline {
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  font-size: clamp(40px, 5.8vw, 64px);
+  line-height: 1.29;
+  color: #FFFAEE;
+}
+
+.hs-body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 1.5;
+  color: #FFFAEE;
+}
+
+.hs-btn {
+  align-self: flex-start;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  color: #494949;
+  background: #E8FE42;
+  border-radius: 9999px;
+  padding: 16px 32px;
+  border: none;
+  cursor: pointer;
+}
+
+/* ── Tablet (≤ 1100px) ─────────────────────────────────── */
+
+@media (max-width: 1100px) {
+  .hs-textbox {
+    width: 52%;
+    bottom: 5%;
+  }
+}
+
+@media (max-width: 900px) {
+  .hs-textbox {
+    width: 64%;
+    bottom: 4%;
+    padding: 32px;
+    gap: 24px;
+  }
+}
+
+/* ── Burger Nav ab 1024px ──────────────────────────────── */
+
+@media (max-width: 1024px) {
+  .hs-nav {
+    padding: 0 32px;
+  }
+  .hs-nav-links,
+  .hs-nav-right {
+    display: none;
+  }
+  .hs-burger {
+    display: flex;
+  }
+}
+
+/* ── Mobile (≤ 767px) ──────────────────────────────────── */
+
+@media (max-width: 767px) {
+  .hs-nav {
+    padding: 0 24px;
+  }
+
+  /* Plus: CI-Element bleibt — repositioniert hinter der Figur (rechts oben, angeschnitten) */
+  .hs-plus {
+    left: auto;
+    right: -8%;
+    top: 6%;
+    width: 72%;
+  }
+
+  .hs-frei {
+    object-position: 57% top;
+  }
+
+  /* Textbox: volle Breite, bündig unten */
+  .hs-textbox {
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    border-radius: 0 44px 0 0;
+    padding: 28px 24px 44px;
+    gap: 20px;
+  }
+
+  .hs-headline {
+    font-size: 40px;
+  }
+
+
+  .hs-btn {
+    padding: 16px 32px;
+    align-self: stretch;
+    text-align: center;
+  }
+}
