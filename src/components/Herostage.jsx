@@ -1,8 +1,24 @@
-import { useRef } from 'react'
+import { useRef, useEffect } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 
 const SPRING = { stiffness: 80, damping: 20, mass: 1 }
 const COLOR_TRANSITION = { duration: 0.4, ease: 'easeInOut' }
+
+const HEADLINE_LINES = [
+  <>Benefits, die sich</>,
+  <>nach <span style={{ color: '#E8FE42' }}>Lifestyle</span></>,
+  <>anfühlen.</>,
+]
+
+const headlineContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.26, delayChildren: 0.1 } },
+}
+
+const headlineLine = {
+  hidden: { y: '110%', opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { duration: 1.1, ease: [0.22, 1, 0.36, 1] } },
+}
 
 const THEMES = {
   grau:    { textboxBg: 'rgba(61, 61, 61, 0.8)',  btnText: '#494949' },
@@ -36,6 +52,37 @@ export default function Herostage({ variant }) {
     rawY.set(0)
   }
 
+  useEffect(() => {
+    if (!('ontouchstart' in window)) return
+
+    let base = null
+
+    function handleOrientation(e) {
+      if (base === null) base = { gamma: e.gamma ?? 0, beta: e.beta ?? 0 }
+      const dx = ((e.gamma ?? 0) - base.gamma) * 6
+      const dy = ((e.beta  ?? 0) - base.beta)  * 4
+      rawX.set(Math.max(-250, Math.min(250, dx)))
+      rawY.set(Math.max(-250, Math.min(250, dy)))
+    }
+
+    async function startOrientation() {
+      try {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+          const permission = await DeviceOrientationEvent.requestPermission()
+          if (permission !== 'granted') return
+        }
+        window.addEventListener('deviceorientation', handleOrientation)
+      } catch (_) {}
+    }
+
+    document.addEventListener('touchstart', startOrientation, { once: true })
+
+    return () => {
+      document.removeEventListener('touchstart', startOrientation)
+      window.removeEventListener('deviceorientation', handleOrientation)
+    }
+  }, [rawX, rawY])
+
   return (
     <div ref={ref} className="hs" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
 
@@ -61,22 +108,43 @@ export default function Herostage({ variant }) {
         transition={COLOR_TRANSITION}
       >
         <div className="hs-copy">
-          <h1 className="hs-headline">
-            Benefits, die sich nach{' '}
-            <span style={{ color: '#E8FE42' }}>Lifestyle</span> anfühlen.
-          </h1>
-          <p className="hs-body">
+          <motion.h1
+            className="hs-headline"
+            key={variant}
+            variants={headlineContainer}
+            initial="hidden"
+            animate="visible"
+          >
+            {HEADLINE_LINES.map((line, i) => (
+              <div key={i} style={{ overflow: 'hidden', display: 'block' }}>
+                <motion.div variants={headlineLine}>{line}</motion.div>
+              </div>
+            ))}
+          </motion.h1>
+          <motion.p
+            className="hs-body"
+            key={`body-${variant}`}
+            initial={{ y: 16, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.62 }}
+          >
             Keine starren Gutscheine, sondern die Freiheit, selbst zu wählen.
-          </p>
+          </motion.p>
         </div>
 
         <motion.button
           className="hs-btn"
-          animate={{ color: theme.btnText }}
-          initial={{ boxShadow: '0px 0px 0px 0px rgba(170, 186, 44, 0)' }}
+          key={`btn-${variant}`}
+          initial={{ y: 16, opacity: 0, color: theme.btnText, boxShadow: '0px 0px 0px 0px rgba(170, 186, 44, 0)' }}
+          animate={{ y: 0, opacity: 1, color: theme.btnText }}
           whileHover={{ x: -5, y: -4, boxShadow: '6px 6px 0px 0px rgba(170, 186, 44, 1)' }}
           whileTap={{ x: -2, y: -2, boxShadow: '3px 3px 0px 0px rgba(170, 186, 44, 1)' }}
-          transition={{ type: 'spring', stiffness: 320, damping: 22, color: COLOR_TRANSITION }}
+          transition={{
+            type: 'spring', stiffness: 320, damping: 22,
+            opacity: { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.62 },
+            y:       { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.62 },
+            color: COLOR_TRANSITION,
+          }}
         >
           Benefits entdecken
         </motion.button>
