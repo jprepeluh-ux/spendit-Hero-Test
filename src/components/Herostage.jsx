@@ -65,20 +65,25 @@ export default function Herostage({ variant }) {
       rawY.set(Math.max(-250, Math.min(250, dy)))
     }
 
-    async function startOrientation() {
-      try {
-        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
-          const permission = await DeviceOrientationEvent.requestPermission()
-          if (permission !== 'granted') return
-        }
-        window.addEventListener('deviceorientation', handleOrientation)
-      } catch (_) {}
+    function startListening() {
+      window.addEventListener('deviceorientation', handleOrientation)
     }
 
-    document.addEventListener('touchstart', startOrientation, { once: true })
+    function onFirstTouch() {
+      if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
+        // iOS: call synchronously within the gesture handler (no await)
+        DeviceOrientationEvent.requestPermission()
+          .then(state => { if (state === 'granted') startListening() })
+          .catch(() => {})
+      } else {
+        startListening()
+      }
+    }
+
+    window.addEventListener('touchend', onFirstTouch, { once: true })
 
     return () => {
-      document.removeEventListener('touchstart', startOrientation)
+      window.removeEventListener('touchend', onFirstTouch)
       window.removeEventListener('deviceorientation', handleOrientation)
     }
   }, [rawX, rawY])
