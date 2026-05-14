@@ -56,22 +56,26 @@ export default function Herostage({ variant }) {
     if (!('ontouchstart' in window)) return
 
     let base = null
+    let started = false
 
     function handleOrientation(e) {
       if (base === null) base = { gamma: e.gamma ?? 0, beta: e.beta ?? 0 }
-      const dx = ((e.gamma ?? 0) - base.gamma) * 6
-      const dy = ((e.beta  ?? 0) - base.beta)  * 4
-      rawX.set(Math.max(-250, Math.min(250, dx)))
-      rawY.set(Math.max(-250, Math.min(250, dy)))
+      const dx = ((e.gamma ?? 0) - base.gamma) * 10
+      const dy = ((e.beta  ?? 0) - base.beta)  * 6
+      rawX.set(Math.max(-300, Math.min(300, dx)))
+      rawY.set(Math.max(-300, Math.min(300, dy)))
     }
 
     function startListening() {
+      if (started) return
+      started = true
       window.addEventListener('deviceorientation', handleOrientation)
     }
 
-    function onFirstTouch() {
+    function requestAccess() {
+      document.removeEventListener('touchend', requestAccess)
+      document.removeEventListener('click', requestAccess)
       if (typeof DeviceOrientationEvent?.requestPermission === 'function') {
-        // iOS: call synchronously within the gesture handler (no await)
         DeviceOrientationEvent.requestPermission()
           .then(state => { if (state === 'granted') startListening() })
           .catch(() => {})
@@ -80,10 +84,16 @@ export default function Herostage({ variant }) {
       }
     }
 
-    window.addEventListener('touchend', onFirstTouch, { once: true })
+    // Short delay so page-load scroll gestures don't consume the listener
+    const timer = setTimeout(() => {
+      document.addEventListener('touchend', requestAccess, { once: true })
+      document.addEventListener('click',    requestAccess, { once: true })
+    }, 300)
 
     return () => {
-      window.removeEventListener('touchend', onFirstTouch)
+      clearTimeout(timer)
+      document.removeEventListener('touchend', requestAccess)
+      document.removeEventListener('click',    requestAccess)
       window.removeEventListener('deviceorientation', handleOrientation)
     }
   }, [rawX, rawY])
