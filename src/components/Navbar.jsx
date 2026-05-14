@@ -96,7 +96,6 @@ export default function Navbar({ variant, setVariant }) {
             ))}
             <div className="hs-mobile-footer">
               <a href="#" className="hs-nav-btn">Termin Buchen</a>
-              <ColorToggle variant={variant} setVariant={setVariant} />
             </div>
           </motion.div>
         )}
