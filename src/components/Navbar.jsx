@@ -82,20 +82,21 @@ export default function Navbar({ variant, setVariant }) {
       </nav>
 
       {/* Mobile Dropdown */}
-      <AnimatePresence>
+      <AnimatePresence initial={false}>
         {open && (
           <motion.div
-            className="hs-mobile-menu"
-            initial={{ opacity: 0, y: -8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.2 }}
+            style={{ overflow: 'hidden' }}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1, transition: { height: { duration: 0.42, ease: [0.22, 1, 0.36, 1] }, opacity: { duration: 0.28, ease: 'easeOut' } } }}
+            exit={{ height: 0, opacity: 0, transition: { height: { duration: 0.32, ease: [0.4, 0, 0.8, 0] }, opacity: { duration: 0.22, ease: 'easeIn' } } }}
           >
-            {NAV_LINKS.map(l => (
-              <a key={l} href="#" className="hs-mobile-link" style={{ color: theme.text }}>{l}</a>
-            ))}
-            <div className="hs-mobile-footer">
-              <a href="#" className="hs-nav-btn">Termin Buchen</a>
+            <div className="hs-mobile-menu">
+              {NAV_LINKS.map(l => (
+                <a key={l} href="#" className="hs-mobile-link" style={{ color: theme.text }}>{l}</a>
+              ))}
+              <div className="hs-mobile-footer">
+                <a href="#" className="hs-nav-btn">Termin Buchen</a>
+              </div>
             </div>
           </motion.div>
         )}
