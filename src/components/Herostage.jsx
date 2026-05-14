@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, useState } from 'react'
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 
 const SPRING = { stiffness: 80, damping: 20, mass: 1 }
@@ -28,6 +28,9 @@ const THEMES = {
 export default function Herostage({ variant }) {
   const theme = THEMES[variant] ?? THEMES.grau
   const ref = useRef(null)
+  const [btnRevealed, setBtnRevealed] = useState(false)
+
+  useEffect(() => { setBtnRevealed(false) }, [variant])
 
   const rawX = useMotionValue(0)
   const rawY = useMotionValue(0)
@@ -149,12 +152,13 @@ export default function Herostage({ variant }) {
           </div>
         </div>
 
-        <div className="hs-btn-clip">
+        <div className="hs-btn-clip" style={{ overflow: btnRevealed ? 'visible' : 'hidden' }}>
           <motion.div
             key={`btn-${variant}`}
             initial={{ y: '110%', opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1], delay: 0.95 }}
+            onAnimationComplete={() => setBtnRevealed(true)}
           >
             <motion.button
               className="hs-btn"
