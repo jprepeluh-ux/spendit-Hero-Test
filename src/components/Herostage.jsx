@@ -136,33 +136,38 @@ export default function Herostage({ variant }) {
               </div>
             ))}
           </motion.h1>
-          <motion.p
-            className="hs-body"
-            key={`body-${variant}`}
-            initial={{ y: 16, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.62 }}
-          >
-            Keine starren Gutscheine, sondern die Freiheit, selbst zu wählen.
-          </motion.p>
+          <div style={{ overflow: 'hidden' }}>
+            <motion.p
+              className="hs-body"
+              key={`body-${variant}`}
+              initial={{ y: '110%', opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1], delay: 0.78 }}
+            >
+              Keine starren Gutscheine, sondern die Freiheit, selbst zu wählen.
+            </motion.p>
+          </div>
         </div>
 
-        <motion.button
-          className="hs-btn"
-          key={`btn-${variant}`}
-          initial={{ y: 16, opacity: 0, color: theme.btnText, boxShadow: '0px 0px 0px 0px rgba(170, 186, 44, 0)' }}
-          animate={{ y: 0, opacity: 1, color: theme.btnText }}
-          whileHover={{ x: -5, y: -4, boxShadow: '6px 6px 0px 0px rgba(170, 186, 44, 1)' }}
-          whileTap={{ x: -2, y: -2, boxShadow: '3px 3px 0px 0px rgba(170, 186, 44, 1)' }}
-          transition={{
-            type: 'spring', stiffness: 320, damping: 22,
-            opacity: { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.62 },
-            y:       { duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.62 },
-            color: COLOR_TRANSITION,
-          }}
-        >
-          Benefits entdecken
-        </motion.button>
+        <div className="hs-btn-clip">
+          <motion.div
+            key={`btn-${variant}`}
+            initial={{ y: '110%', opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 1.0, ease: [0.22, 1, 0.36, 1], delay: 0.95 }}
+          >
+            <motion.button
+              className="hs-btn"
+              initial={{ color: theme.btnText, boxShadow: '0px 0px 0px 0px rgba(170, 186, 44, 0)' }}
+              animate={{ color: theme.btnText }}
+              whileHover={{ x: -5, y: -4, boxShadow: '6px 6px 0px 0px rgba(170, 186, 44, 1)' }}
+              whileTap={{ x: -2, y: -2, boxShadow: '3px 3px 0px 0px rgba(170, 186, 44, 1)' }}
+              transition={{ type: 'spring', stiffness: 320, damping: 22, color: COLOR_TRANSITION }}
+            >
+              Benefits entdecken
+            </motion.button>
+          </motion.div>
+        </div>
       </motion.div>
     </div>
   )
