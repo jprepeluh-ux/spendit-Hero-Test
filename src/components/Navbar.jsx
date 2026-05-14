@@ -70,12 +70,15 @@ export default function Navbar({ variant, setVariant }) {
           </motion.a>
         </div>
 
-        {/* Mobile Burger */}
-        <button className="hs-burger" onClick={() => setOpen(v => !v)} aria-label="Menü">
-          <motion.span className="hs-burger-line" animate={{ rotate: open ? 45 : 0, y: open ? 7 : 0 }} transition={{ duration: 0.2 }} />
-          <motion.span className="hs-burger-line" animate={{ opacity: open ? 0 : 1 }} transition={{ duration: 0.15 }} />
-          <motion.span className="hs-burger-line" animate={{ rotate: open ? -45 : 0, y: open ? -7 : 0 }} transition={{ duration: 0.2 }} />
-        </button>
+        {/* Mobile: ColorToggle + Burger */}
+        <div className="hs-mobile-controls">
+          <ColorToggle variant={variant} setVariant={setVariant} />
+          <button className="hs-burger" onClick={() => setOpen(v => !v)} aria-label="Menü">
+            <motion.span className="hs-burger-line" animate={{ rotate: open ? 45 : 0, y: open ? 7 : 0 }} transition={{ duration: 0.2 }} />
+            <motion.span className="hs-burger-line" animate={{ opacity: open ? 0 : 1 }} transition={{ duration: 0.15 }} />
+            <motion.span className="hs-burger-line" animate={{ rotate: open ? -45 : 0, y: open ? -7 : 0 }} transition={{ duration: 0.2 }} />
+          </button>
+        </div>
       </nav>
 
       {/* Mobile Dropdown */}

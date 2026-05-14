@@ -115,9 +115,15 @@
   flex-shrink: 0;
 }
 
-/* Burger — nur Mobile sichtbar */
-.hs-burger {
+/* Mobile Controls (ColorToggle + Burger) — nur Mobile sichtbar */
+.hs-mobile-controls {
   display: none;
+  align-items: center;
+  gap: 12px;
+}
+
+.hs-burger {
+  display: flex;
   flex-direction: column;
   gap: 5px;
   background: none;
@@ -281,7 +287,7 @@
   .hs-nav-right {
     display: none;
   }
-  .hs-burger {
+  .hs-mobile-controls {
     display: flex;
   }
 }
