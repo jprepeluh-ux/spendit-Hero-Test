@@ -35,7 +35,7 @@ export default function Navbar({ variant, setVariant }) {
   const theme = NAV_THEMES[variant]
 
   return (
-    <>
+    <div className="hs-nav-wrapper">
       <nav className="hs-nav">
         <motion.div
           className="hs-nav-logo"
@@ -100,6 +100,6 @@ export default function Navbar({ variant, setVariant }) {
           </motion.div>
         )}
       </AnimatePresence>
-    </>
+    </div>
   )
 }
