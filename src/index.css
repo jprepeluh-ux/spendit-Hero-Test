@@ -96,8 +96,6 @@
   font-size: 14px;
   line-height: 24px;
   letter-spacing: 0.02em;
-  color: #494949;
-  background: #E8FE42;
   border-radius: 9999px;
   padding: 14px 24px;
   border: none;
@@ -204,9 +202,22 @@
   left: 65.4%;
   top: 2.7%;
   width: 29.5%;
+  aspect-ratio: 384 / 404;
 }
 
-/* Textbox — immer an der Unterkante, Hintergrundfarbe via JS/Framer */
+/* Plus: Gradient-Schichten via CSS-Mask (SVG-Shape als Maske) */
+.hs-plus-mask {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-image: url('/assets/plus.svg');
+  mask-image: url('/assets/plus.svg');
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+/* Textbox — immer an der Unterkante */
 .hs-textbox {
   position: absolute;
   left: 5.56%;
@@ -217,6 +228,16 @@
   gap: 32px;
   padding: 40px;
   border-radius: 0 64px 0 64px;
+  isolation: isolate;
+}
+
+/* Hintergrundschichten — cross-fade via Framer Motion */
+.hs-textbox-layer {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
 }
 
 
@@ -254,12 +275,84 @@
   font-size: 16px;
   line-height: 24px;
   letter-spacing: 0.02em;
-  color: #494949;
-  background: #E8FE42;
   border-radius: 9999px;
   padding: 16px 32px;
   border: none;
   cursor: pointer;
+}
+
+/* ── Theme Dropdown ─────────────────────────────────────── */
+
+.hs-theme-dropdown {
+  position: relative;
+}
+
+.hs-theme-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  background: rgba(255, 250, 238, 0.97);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  border-radius: 14px;
+  padding: 6px;
+  min-width: 188px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.13), 0 1px 4px rgba(0, 0, 0, 0.07);
+  border: 1px solid rgba(0, 0, 0, 0.07);
+  z-index: 200;
+  transform-origin: top right;
+}
+
+.hs-theme-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 9px 12px;
+  background: none;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.13s ease;
+}
+
+.hs-theme-option:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.hs-theme-option--active:hover {
+  filter: brightness(1.15);
+}
+
+.hs-theme-option--active .hs-theme-label {
+  color: #FFFAEE;
+}
+
+.hs-theme-option--active .hs-swatch {
+  border-color: rgba(255, 250, 238, 0.25);
+}
+
+.hs-theme-swatches {
+  display: flex;
+  gap: 3px;
+  flex-shrink: 0;
+}
+
+.hs-swatch {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.14);
+}
+
+.hs-theme-label {
+  font-family: 'Poppins', sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #3a3a3a;
+  white-space: nowrap;
 }
 
 /* ── Tablet (≤ 1100px) ─────────────────────────────────── */

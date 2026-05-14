@@ -4,12 +4,6 @@ import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 const SPRING = { stiffness: 80, damping: 20, mass: 1 }
 const COLOR_TRANSITION = { duration: 0.4, ease: 'easeInOut' }
 
-const HEADLINE_LINES = [
-  <>Benefits, die sich</>,
-  <>nach <span style={{ color: '#E8FE42' }}>Lifestyle</span></>,
-  <>anfühlen.</>,
-]
-
 const headlineContainer = {
   hidden: {},
   visible: { transition: { staggerChildren: 0.26, delayChildren: 0.1 } },
@@ -21,8 +15,9 @@ const headlineLine = {
 }
 
 const THEMES = {
-  grau:    { textboxBg: 'rgba(61, 61, 61, 0.8)',  btnText: '#494949' },
-  violett: { textboxBg: 'rgba(68, 53, 99, 0.8)',  btnText: '#443563' },
+  grau:    { textboxBg: 'rgba(61, 61, 61, 0.8)',  btnText: '#494949', btnBg: '#E8FE42', accent: '#E8FE42', btnShadow: 'rgba(170, 186, 44, 1)' },
+  violett: { textboxBg: 'rgba(68, 53, 99, 0.8)',  btnText: '#443563', btnBg: '#E8FE42', accent: '#E8FE42', btnShadow: 'rgba(170, 186, 44, 1)' },
+  gruen:   { textboxBg: 'linear-gradient(185deg, rgba(54, 42, 77, 0.9) 20%, rgba(227, 127, 235, 0.88) 100%)', btnText: '#362A4D', btnBg: '#B8FF6F', accent: '#B8FF6F', btnShadow: 'rgba(107, 145, 67, 1)' },
 }
 
 export default function Herostage({ variant }) {
@@ -87,7 +82,6 @@ export default function Herostage({ variant }) {
       }
     }
 
-    // Short delay so page-load scroll gestures don't consume the listener
     const timer = setTimeout(() => {
       document.addEventListener('touchend', requestAccess, { once: true })
       document.addEventListener('click',    requestAccess, { once: true })
@@ -101,6 +95,12 @@ export default function Herostage({ variant }) {
     }
   }, [rawX, rawY])
 
+  const headlineLines = [
+    <>Benefits, die sich</>,
+    <>nach <span style={{ color: theme.accent }}>Lifestyle</span></>,
+    <>anfühlen.</>,
+  ]
+
   return (
     <div ref={ref} className="hs" onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
 
@@ -109,9 +109,22 @@ export default function Herostage({ variant }) {
         <img src="/assets/bg.png" alt="" className="hs-img" />
       </motion.div>
 
-      {/* Layer 2: Plus SVG */}
+      {/* Layer 2: Plus — CSS-Mask mit cross-fading Hintergrundschichten */}
       <motion.div className="hs-plus" style={{ x: plusX, y: plusY }}>
-        <img src="/assets/plus.svg" alt="" style={{ width: '100%', height: 'auto', display: 'block' }} />
+        {/* Gelb (grau + violett) */}
+        <motion.div
+          className="hs-plus-mask"
+          style={{ background: '#E8FE41' }}
+          animate={{ opacity: variant !== 'gruen' ? 1 : 0 }}
+          transition={COLOR_TRANSITION}
+        />
+        {/* Gradient (gruen) */}
+        <motion.div
+          className="hs-plus-mask"
+          style={{ background: 'linear-gradient(180deg, #B8FF6F 35%, #EE20FF 92%)' }}
+          animate={{ opacity: variant === 'gruen' ? 1 : 0 }}
+          transition={COLOR_TRANSITION}
+        />
       </motion.div>
 
       {/* Layer 3: Freisteller */}
@@ -119,12 +132,19 @@ export default function Herostage({ variant }) {
         <img src="/assets/freisteller.png" alt="" className="hs-img hs-frei" />
       </motion.div>
 
-      {/* Layer 4: Textbox */}
-      <motion.div
-        className="hs-textbox"
-        animate={{ backgroundColor: theme.textboxBg }}
-        transition={COLOR_TRANSITION}
-      >
+      {/* Layer 4: Textbox — Background via cross-fading Layers */}
+      <div className="hs-textbox">
+        {/* Hintergrundschichten — cross-fade zwischen Themes */}
+        {Object.entries(THEMES).map(([key, t]) => (
+          <motion.div
+            key={key}
+            className="hs-textbox-layer"
+            style={{ background: t.textboxBg }}
+            animate={{ opacity: variant === key ? 1 : 0 }}
+            transition={COLOR_TRANSITION}
+          />
+        ))}
+
         <div className="hs-copy">
           <motion.h1
             className="hs-headline"
@@ -133,7 +153,7 @@ export default function Herostage({ variant }) {
             initial="hidden"
             animate="visible"
           >
-            {HEADLINE_LINES.map((line, i) => (
+            {headlineLines.map((line, i) => (
               <div key={i} style={{ overflow: 'hidden', display: 'block' }}>
                 <motion.div variants={headlineLine}>{line}</motion.div>
               </div>
@@ -162,17 +182,17 @@ export default function Herostage({ variant }) {
           >
             <motion.button
               className="hs-btn"
-              initial={{ color: theme.btnText, boxShadow: '0px 0px 0px 0px rgba(170, 186, 44, 0)' }}
-              animate={{ color: theme.btnText }}
-              whileHover={{ x: -5, y: -4, boxShadow: '6px 6px 0px 0px rgba(170, 186, 44, 1)' }}
-              whileTap={{ x: -2, y: -2, boxShadow: '3px 3px 0px 0px rgba(170, 186, 44, 1)' }}
-              transition={{ type: 'spring', stiffness: 320, damping: 22, color: COLOR_TRANSITION }}
+              initial={{ color: theme.btnText, backgroundColor: theme.btnBg, boxShadow: '0px 0px 0px 0px rgba(0, 0, 0, 0)' }}
+              animate={{ color: theme.btnText, backgroundColor: theme.btnBg }}
+              whileHover={{ x: -5, y: -4, boxShadow: `6px 6px 0px 0px ${theme.btnShadow}` }}
+              whileTap={{ x: -2, y: -2, boxShadow: `3px 3px 0px 0px ${theme.btnShadow}` }}
+              transition={{ type: 'spring', stiffness: 320, damping: 22, color: COLOR_TRANSITION, backgroundColor: COLOR_TRANSITION }}
             >
               Benefits entdecken
             </motion.button>
           </motion.div>
         </div>
-      </motion.div>
+      </div>
     </div>
   )
 }
