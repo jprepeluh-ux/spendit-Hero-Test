@@ -514,8 +514,8 @@
     width: calc(100% - 80px); /* 40px Padding je Seite */
     max-width: none;
     align-self: center;
-    margin-top: calc(80px + 64px); /* Navbar-Höhe + 64px Abstand */
-    margin-bottom: 8px;
+    margin-top: calc(80px + 20px); /* Navbar-Höhe + 20px Abstand */
+    margin-bottom: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -545,8 +545,8 @@
     transform: none;
     width: auto;
     max-width: none;
-    padding: 24px 24px 52px;
-    gap: 20px;
+    padding: 16px 24px 32px;
+    gap: 16px;
   }
 
   .hs-ed-headline {
