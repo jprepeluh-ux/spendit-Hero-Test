@@ -8,12 +8,14 @@ const NAV_THEMES = {
   grau:    { text: '#494949', logoColor: '#494949', btnText: '#494949', navBtnBg: '#E8FE42', navBtnShadow: 'rgba(169, 186, 44, 1)' },
   violett: { text: '#48444F', logoColor: '#5F4A8B', btnText: '#443563', navBtnBg: '#E8FE42', navBtnShadow: 'rgba(169, 186, 44, 1)' },
   gruen:   { text: '#362A4D', logoColor: '#362A4D', btnText: '#362A4D', navBtnBg: '#B8FF6F', navBtnShadow: 'rgba(107, 145, 67, 1)' },
+  hell:    { text: '#362A4D', logoColor: '#362A4D', btnText: '#362A4D', navBtnBg: '#B8FF6F', navBtnShadow: 'rgba(107, 145, 67, 1)' },
 }
 
 const THEME_OPTIONS = [
   { key: 'grau',    label: 'Yellow-Gray',   swatches: ['#E8FE42', '#494949'], activeBg: '#494949' },
   { key: 'violett', label: 'Yellow-Purple',  swatches: ['#E8FE42', '#443563'], activeBg: '#443563' },
   { key: 'gruen',   label: 'Green-Purple',   swatches: ['#B8FF6F', '#362A4D'], activeBg: '#362A4D' },
+  { key: 'hell',    label: 'Green-Purple Freisteller', swatches: ['#B8FF6F', '#362A4D'], activeBg: '#362A4D' },
 ]
 
 function ThemeDropdown({ variant, setVariant }) {
